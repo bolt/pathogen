@@ -15,7 +15,6 @@ use Eloquent\Pathogen\Factory\PathFactoryInterface;
 use Eloquent\Pathogen\FileSystem\AbsoluteFileSystemPathInterface;
 use Eloquent\Pathogen\Unix\Factory\UnixPathFactory;
 use Eloquent\Pathogen\Windows\Factory\WindowsPathFactory;
-use Icecave\Isolator\Isolator;
 
 /**
  * Abstract base class for classes implementing FileSystemPathFactoryInterface.
@@ -33,7 +32,7 @@ abstract class AbstractFileSystemPathFactory implements
     public function __construct(
         PathFactoryInterface $unixFactory = null,
         PathFactoryInterface $windowsFactory = null,
-        Isolator $isolator = null
+        $isolator = null
     ) {
         if (null === $unixFactory) {
             $unixFactory = UnixPathFactory::instance();
@@ -44,7 +43,11 @@ abstract class AbstractFileSystemPathFactory implements
 
         $this->unixFactory = $unixFactory;
         $this->windowsFactory = $windowsFactory;
-        $this->isolator = Isolator::get($isolator);
+        
+        // Bolt doesn't use isolator, so warn users it is not available
+        if ($isolator != null) {
+            throw new Exception("Bolt pathogen does not use isolator", 1);
+        }
     }
 
     /**
@@ -75,7 +78,7 @@ abstract class AbstractFileSystemPathFactory implements
     public function createWorkingDirectoryPath()
     {
         return $this->factoryByPlatform()
-            ->create($this->isolator()->getcwd());
+            ->create(getcwd());
     }
 
     /**
@@ -86,7 +89,7 @@ abstract class AbstractFileSystemPathFactory implements
     public function createTemporaryDirectoryPath()
     {
         return $this->factoryByPlatform()
-            ->create($this->isolator()->sys_get_temp_dir());
+            ->create(sys_get_temp_dir());
     }
 
     /**
@@ -107,17 +110,7 @@ abstract class AbstractFileSystemPathFactory implements
         }
 
         return $this->createTemporaryDirectoryPath()
-            ->joinAtoms($this->isolator()->uniqid($prefix, true));
-    }
-
-    /**
-     * Get the isolator.
-     *
-     * @return Isolator The isolator.
-     */
-    protected function isolator()
-    {
-        return $this->isolator;
+            ->joinAtoms(uniqid($prefix, true));
     }
 
     /**
@@ -128,7 +121,7 @@ abstract class AbstractFileSystemPathFactory implements
      */
     protected function factoryByPlatform()
     {
-        if ($this->isolator()->defined('PHP_WINDOWS_VERSION_BUILD')) {
+        if (defined('PHP_WINDOWS_VERSION_BUILD')) {
             return $this->windowsFactory();
         }
 
@@ -137,5 +130,4 @@ abstract class AbstractFileSystemPathFactory implements
 
     private $unixFactory;
     private $windowsFactory;
-    private $isolator;
 }

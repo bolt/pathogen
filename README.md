@@ -2,6 +2,12 @@
 
 *General-purpose path library for PHP.*
 
+
+## NOTE: this is the Bolt fork of pathogen
+
+It does not include nor work with the isolator package.
+
+
 [![The most recent stable version is 0.6.1][version-image]][Semantic versioning]
 [![Current build status image][build-image]][Current build status]
 [![Current coverage status image][coverage-image]][Current coverage status]
