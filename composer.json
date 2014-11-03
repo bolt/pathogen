@@ -1,5 +1,5 @@
 {
-    "name": "gdmac/pathogen",
+    "name": "bolt/pathogen",
     "description": "Fork of pathogen, a general-purpose path library for PHP, but without using isolator.",
     "keywords": ["path", "filesystem", "file", "manipulation"],
     "homepage": "https://github.com/bolt/pathogen",
