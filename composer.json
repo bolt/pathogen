@@ -1,8 +1,8 @@
 {
-    "name": "eloquent/pathogen",
-    "description": "General-purpose path library for PHP.",
+    "name": "bolt/pathogen",
+    "description": "Fork of pathogen, a general-purpose path library for PHP, but without using isolator.",
     "keywords": ["path", "filesystem", "file", "manipulation"],
-    "homepage": "https://github.com/eloquent/pathogen",
+    "homepage": "https://github.com/bolt/pathogen",
     "license": "MIT",
     "authors": [
         {
@@ -18,8 +18,7 @@
     ],
     "require": {
         "php": ">=5.3",
-        "ext-mbstring": "*",
-        "icecave/isolator": "~2"
+        "ext-mbstring": "*"
     },
     "require-dev": {
         "icecave/archer": "~1",
