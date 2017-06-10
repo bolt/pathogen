@@ -18,7 +18,7 @@
     ],
     "require": {
         "php": ">=5.3",
-        "ext-mbstring": "*"
+        "symfony/polyfill-mbstring": "^1.0"
     },
     "require-dev": {
         "icecave/archer": "~1",
